@@ -32,6 +32,9 @@ class CollegeFragment : Fragment() {
         }
         binding.btnUploadFile.setOnClickListener{
             var dialog = CustomUploadDialog()
+            val bundle=Bundle()
+            bundle.putString("TEXT",binding.spinner.selectedItem.toString())
+            dialog.arguments = bundle
             dialog.show(childFragmentManager,"customDialog")
         }
         return binding.root

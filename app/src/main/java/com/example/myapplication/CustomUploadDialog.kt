@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.myapplication.databinding.DialogUploadBinding
@@ -20,7 +21,7 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.lang.Exception
 
-private const val REQUEST_CODE_IMAGE_PICK =0
+private const val REQUEST_CODE_IMAGE_PICK = 0
 
 class CustomUploadDialog : DialogFragment() {
 
@@ -40,6 +41,9 @@ class CustomUploadDialog : DialogFragment() {
         binding.btnUpload.setOnClickListener{
             uploadImageToStorage("myImage")
         }
+        val bundle = arguments
+
+        binding.tvDialogBranch.text = bundle?.getString("TEXT","")
         return binding.root
     }
 
@@ -57,7 +61,13 @@ class CustomUploadDialog : DialogFragment() {
     private fun uploadImageToStorage(filename:String) = CoroutineScope(Dispatchers.IO).launch {
         try {
             currFile?.let {
-                imageRef.child("images/$filename").putFile(it).await()
+                if(binding.etSubject.text!=null){
+                    imageRef.child("${binding.tvDialogCourse.text}/${binding.tvDialogBranch.text}/${binding.spinner3.selectedItem}/${binding.etSubject.text}/${it.hashCode()}").putFile(it).await()
+                }else{
+                    withContext(Dispatchers.Main){
+                        Toast.makeText(context,"Please Enter Subject", Toast.LENGTH_SHORT).show()
+                    }
+                }
                 withContext(Dispatchers.Main){
                     Toast.makeText(context,"Successfully Uploaded", Toast.LENGTH_SHORT).show()
                 }

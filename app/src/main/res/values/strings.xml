@@ -12,4 +12,15 @@
         <item>Civil</item>
         <item>Mechanical</item>
     </string-array>
+    <string-array name="semester">
+        <item>Select Semester</item>
+        <item>Semester 1</item>
+        <item>Semester 2</item>
+        <item>Semester 3</item>
+        <item>Semester 4</item>
+        <item>Semester 5</item>
+        <item>Semester 6</item>
+        <item>Semester 7</item>
+        <item>Semester 8</item>
+    </string-array>
 </resources>
