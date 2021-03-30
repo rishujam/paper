@@ -68,6 +68,15 @@
             android:layout_marginLeft="16dp"
             android:text="Upload a paper"/>
 
+        <TextView
+            android:id="@+id/tvFolderType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:paddingLeft="16dp"
+            android:textSize="18sp"
+            android:text="Select Year" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPapers"
             android:padding="16dp"

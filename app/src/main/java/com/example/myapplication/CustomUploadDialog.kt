@@ -7,11 +7,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.myapplication.databinding.DialogUploadBinding
-import com.example.myapplication.databinding.FragmentCollegeBinding
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CoroutineScope
@@ -39,10 +37,14 @@ class CustomUploadDialog : DialogFragment() {
             }
         }
         binding.btnUpload.setOnClickListener{
-            uploadImageToStorage("myImage")
+            uploadImageToStorage()
+            //uploadPermanent()
         }
         val bundle = arguments
 
+        if(bundle?.getString("TEXT1","")== "pdf"){
+            binding.ivPreview.setImageResource(R.drawable.ic_pdficon)
+        }
         binding.tvDialogBranch.text = bundle?.getString("TEXT","")
         return binding.root
     }
@@ -58,18 +60,18 @@ class CustomUploadDialog : DialogFragment() {
         }
     }
 
-    private fun uploadImageToStorage(filename:String) = CoroutineScope(Dispatchers.IO).launch {
+    private fun uploadImageToStorage() = CoroutineScope(Dispatchers.IO).launch {
         try {
             currFile?.let {
-                if(binding.etSubject.text!=null){
-                    imageRef.child("${binding.tvDialogCourse.text}/${binding.tvDialogBranch.text}/${binding.spinner3.selectedItem}/${binding.etSubject.text}/${it.hashCode()}").putFile(it).await()
+                if(binding.spSubjects.selectedItem!="Select Subject" || binding.spinner3.selectedItem!="Select Year"){
+                    imageRef.child("${binding.tvDialogCourse.text}/${binding.tvDialogBranch.text}/${binding.spinner3.selectedItem}/${binding.spSubjects.selectedItem}/${it.hashCode()}").putFile(it).await()
+                    withContext(Dispatchers.Main){
+                        Toast.makeText(context,"Successfully Uploaded", Toast.LENGTH_SHORT).show()
+                    }
                 }else{
                     withContext(Dispatchers.Main){
                         Toast.makeText(context,"Please Enter Subject", Toast.LENGTH_SHORT).show()
                     }
-                }
-                withContext(Dispatchers.Main){
-                    Toast.makeText(context,"Successfully Uploaded", Toast.LENGTH_SHORT).show()
                 }
             }
         }catch (e: Exception){
@@ -78,4 +80,23 @@ class CustomUploadDialog : DialogFragment() {
             }
         }
     }
+    private fun uploadPermanent()= CoroutineScope(Dispatchers.IO).launch {
+        try {
+            currFile?.let {
+                if(binding.spSubjects.selectedItem!="Select Subject"|| binding.spinner3.selectedItem!="Select Year"){
+                    imageRef.child("Everything/${it.hashCode()}").putFile(it).await()
+                }else{
+                    withContext(Dispatchers.Main){
+                        Toast.makeText(context,"Please Enter Subject", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }catch (e:Exception){
+            withContext(Dispatchers.Main){
+                Toast.makeText(context,"Not added permanently", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+
 }
