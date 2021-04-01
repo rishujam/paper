@@ -1,7 +1,6 @@
 
 package com.example.myapplication
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +17,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 
 
 class CollegeFragment : Fragment(), CollegeListAdapter.OnItemClickListener {
@@ -26,17 +24,48 @@ class CollegeFragment : Fragment(), CollegeListAdapter.OnItemClickListener {
     override fun onItemClick(position: Int) {
         when (binding.tvFolderType.text) {
             "Papers" -> {
+                val dialog = PaperViewDialog()
+                val bundle = Bundle()
                 val paperName = adapter.papers[position].name
-
+                bundle.putString("TEXTT",paperName)
+                bundle.putString("TEXTT1",binding.spinner.selectedItem.toString())
+                bundle.putString("TEXTT2",yearSelected)
+                bundle.putString("TEXTT3",subSelected)
+                dialog.arguments = bundle
+                dialog.show(childFragmentManager,"viewDialog")
             }
             resources.getStringArray(R.array.subYear1)[0] -> {
-                readFiles("B.Tech/CS-IT/First Year/Engine. Physics/")
+                subSelected = adapter.papers[position].name
+                readFiles("B.Tech/${binding.spinner.selectedItem}/${yearSelected}/${subSelected}/")
                 binding.tvFolderType.text = "Papers"
 
             }
             "Select Year" -> {
                 binding.apply {
-                    adapter = PaperListAdapter(sub1,this@CollegeFragment)
+                    yearSelected = adapter.papers[position].name
+                    when(yearSelected){
+                        "First Year" -> {
+                            for(i in 1 until resources.getStringArray(R.array.subYear1).size){
+                                val sub = resources.getStringArray(R.array.subYear1)[i]
+                                sub1.add(Paper(sub))
+                            }
+                            adapter = PaperListAdapter(sub1,this@CollegeFragment)
+                        }
+                        "Second Year" -> {
+                            for(i in 1 until resources.getStringArray(R.array.subYear2).size){
+                                val sub = resources.getStringArray(R.array.subYear2)[i]
+                                sub2.add(Paper(sub))
+                            }
+                            adapter = PaperListAdapter(sub2,this@CollegeFragment)
+                        }
+                        "Third Year" -> {
+                            for(i in 1 until resources.getStringArray(R.array.subYear3).size){
+                                val sub = resources.getStringArray(R.array.subYear3)[i]
+                                sub3.add(Paper(sub))
+                            }
+                            adapter = PaperListAdapter(sub3,this@CollegeFragment)
+                        }
+                    }
                     rvPapers.adapter = adapter
                     rvPapers.layoutManager = LinearLayoutManager(context)
                     tvFolderType.text= resources.getStringArray(R.array.subYear1)[0]
@@ -48,8 +77,12 @@ class CollegeFragment : Fragment(), CollegeListAdapter.OnItemClickListener {
     private var _binding: FragmentCollegeBinding? = null
     private val binding get() = _binding!!
     private val imageRef = Firebase.storage.reference
-    private var sub1  = mutableListOf<Paper>()
+    private var sub1 = mutableListOf<Paper>()
+    private var sub2 = mutableListOf<Paper>()
+    private var sub3 = mutableListOf<Paper>()
     private lateinit var adapter :PaperListAdapter
+    private lateinit var yearSelected:String
+    private lateinit var subSelected:String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,15 +90,12 @@ class CollegeFragment : Fragment(), CollegeListAdapter.OnItemClickListener {
     ): View? {
         _binding = FragmentCollegeBinding.inflate(inflater, container, false)
 
-        val years = listOf(Paper("First Year"), Paper("Second Year"), Paper("Third Year"), Paper("Fourth Year"))
+        val years = listOf(Paper("First Year"), Paper("Second Year"), Paper("Third Year"))
         adapter  = PaperListAdapter(years,this)
         binding.rvPapers.adapter = adapter
         binding.rvPapers.layoutManager = LinearLayoutManager(context)
 
-        for(i in 1 until resources.getStringArray(R.array.subYear1).size){
-            val sub = resources.getStringArray(R.array.subYear1)[i]
-            sub1.add(Paper(sub))
-        }
+
 
         binding.actionBarSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -75,7 +105,7 @@ class CollegeFragment : Fragment(), CollegeListAdapter.OnItemClickListener {
             }
         }
         binding.btnUploadFile.setOnClickListener{
-            var dialog = SelectTypeDialog()
+            val dialog = SelectTypeDialog()
             val bundle=Bundle()
             bundle.putString("TEXT",binding.spinner.selectedItem.toString())
             dialog.arguments = bundle
@@ -84,18 +114,8 @@ class CollegeFragment : Fragment(), CollegeListAdapter.OnItemClickListener {
         return binding.root
     }
 
-    private fun downloadFile(path:String) = CoroutineScope(Dispatchers.IO).launch {
-        try {
-            val maxDownloadSize = 5L * 1024 * 1024
-            val bytes = imageRef.child(path).getBytes(maxDownloadSize).await()
-            val bmp = BitmapFactory.decodeByteArray(bytes,0,bytes.size)
 
-        }catch (e:Exception){
-            withContext(Dispatchers.Main){
-                Toast.makeText(context,e.message,Toast.LENGTH_LONG).show()
-            }
-        }
-    }
+
 
     private fun readFiles(path:String){
         val imageUrls = mutableListOf<Paper>()

@@ -37,9 +37,11 @@
     </string-array>
     <string-array name="subYear3">
         <item>Select Subject</item>
-    </string-array>
-    <string-array name="subYear4">
-        <item>Select Subject</item>
+        <item>DBMS</item>
+        <item>Compiler Design</item>
+        <item>Software Engineering</item>
+        <item>Computer Networks</item>
+        <item>Data Analytics</item>
     </string-array>
     <string-array name="Year">
         <item>Select Year</item>

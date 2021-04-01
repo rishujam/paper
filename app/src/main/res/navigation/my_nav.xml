@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_collegeListFragment_to_collegeFragment"
             app:destination="@id/collegeFragment" />
+        <action
+            android:id="@+id/action_collegeListFragment_to_downloadsFrag"
+            app:destination="@id/downloadsFrag" />
     </fragment>
     <fragment
         android:id="@+id/collegeFragment"
@@ -22,5 +25,21 @@
         <action
             android:id="@+id/action_collegeFragment_to_collegeListFragment"
             app:destination="@id/collegeListFragment" />
+        <action
+            android:id="@+id/action_collegeFragment_to_downloadsFrag"
+            app:destination="@id/downloadsFrag" />
     </fragment>
+    <fragment
+        android:id="@+id/downloadsFrag"
+        android:name="com.example.myapplication.DownloadsFrag"
+        android:label="fragment_downloads"
+        tools:layout="@layout/fragment_downloads" >
+        <action
+            android:id="@+id/action_downloadsFrag_to_collegeListFragment"
+            app:destination="@id/collegeListFragment" />
+        <action
+            android:id="@+id/action_downloadsFrag_to_collegeFragment"
+            app:destination="@id/collegeFragment" />
+    </fragment>
+
 </navigation>

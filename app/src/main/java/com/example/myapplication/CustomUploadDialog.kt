@@ -63,7 +63,7 @@ class CustomUploadDialog : DialogFragment() {
     private fun uploadImageToStorage() = CoroutineScope(Dispatchers.IO).launch {
         try {
             currFile?.let {
-                if(binding.spSubjects.selectedItem!="Select Subject" || binding.spinner3.selectedItem!="Select Year"){
+                if(binding.spSubjects.selectedItem!="Select Subject" && binding.spinner3.selectedItem!="Select Year"){
                     imageRef.child("${binding.tvDialogCourse.text}/${binding.tvDialogBranch.text}/${binding.spinner3.selectedItem}/${binding.spSubjects.selectedItem}/${it.hashCode()}").putFile(it).await()
                     withContext(Dispatchers.Main){
                         Toast.makeText(context,"Successfully Uploaded", Toast.LENGTH_SHORT).show()
