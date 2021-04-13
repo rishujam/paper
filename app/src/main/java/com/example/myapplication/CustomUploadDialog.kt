@@ -4,11 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
@@ -20,9 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.lang.Exception
-import java.util.ArrayList
-import kotlin.math.sign
+import java.util.*
 
 private const val REQUEST_CODE_IMAGE_PICK = 0
 
@@ -35,8 +32,21 @@ class CustomUploadDialog : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         bind = DataBindingUtil.inflate(inflater,R.layout.dialog_upload,container,false)
 
-        bind.spinner3.onItemSelectedListener
+        bind.spinner3.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+            ) {
+                changeSpinnerData()
+            }
 
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+
+        }
 
         bind.ivPreview.setOnClickListener {
             Intent(Intent.ACTION_GET_CONTENT).also {
@@ -54,6 +64,7 @@ class CustomUploadDialog : DialogFragment() {
             bind.ivPreview.setImageResource(R.drawable.ic_pdficon)
         }
         bind.tvDialogBranch.text = bundle?.getString("TEXT","")
+
         return bind.root
     }
 
@@ -89,7 +100,7 @@ class CustomUploadDialog : DialogFragment() {
         }
     }
 
-    private fun changeSpinnerData(){
+    private fun changeSpinnerData() {
         val a  = ArrayList<String>()
         when(bind.spinner3.selectedItem.toString()){
             "Select Year" -> {
