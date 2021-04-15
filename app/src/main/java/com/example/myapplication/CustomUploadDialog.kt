@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.myapplication.databinding.DialogUploadBinding
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CoroutineScope
@@ -28,6 +29,7 @@ class CustomUploadDialog : DialogFragment() {
     private lateinit var bind:DialogUploadBinding
     var currFile: Uri? = null
     private val imageRef = Firebase.storage.reference
+    private val pathRef = Firebase.firestore.collection("paths")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         bind = DataBindingUtil.inflate(inflater,R.layout.dialog_upload,container,false)
@@ -56,7 +58,10 @@ class CustomUploadDialog : DialogFragment() {
             }
         }
         bind.btnUpload.setOnClickListener{
-            uploadImageToStorage()
+            val path = "${bind.tvDialogCourse.text}/${bind.tvDialogBranch.text}/${bind.spinner3.selectedItem}/${bind.spSubjects.selectedItem}/${bind.etPaperTitile.text.trim()}/"
+            uploadImageToStorage(path)
+            val pat = "${bind.tvDialogCourse.text}/${bind.tvDialogBranch.text}/${bind.spinner3.selectedItem}/${bind.spSubjects.selectedItem}/"
+            uploadPath(pat)
         }
         val bundle = arguments
 
@@ -79,17 +84,17 @@ class CustomUploadDialog : DialogFragment() {
         }
     }
 
-    private fun uploadImageToStorage() = CoroutineScope(Dispatchers.IO).launch {
+    private fun uploadImageToStorage(path:String) = CoroutineScope(Dispatchers.IO).launch {
         try {
             currFile?.let {
-                if(bind.spSubjects.selectedItem!="Select Subject" && bind.spinner3.selectedItem!="Select Year"){
-                    imageRef.child("${bind.tvDialogCourse.text}/${bind.tvDialogBranch.text}/${bind.spinner3.selectedItem}/${bind.spSubjects.selectedItem}/${it.hashCode()}").putFile(it).await()
+                if(bind.spSubjects.selectedItem.toString()!="Select Subject" && bind.spinner3.selectedItem.toString()!="Select Year" && bind.etPaperTitile.text.isNotEmpty()){
+                    imageRef.child("${path}${it.hashCode()}").putFile(it).await()
                     withContext(Dispatchers.Main){
                         Toast.makeText(context,"Successfully Uploaded", Toast.LENGTH_SHORT).show()
                     }
                 }else{
                     withContext(Dispatchers.Main){
-                        Toast.makeText(context,"Please Enter Subject", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context,"Please Enter all details", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -99,6 +104,16 @@ class CustomUploadDialog : DialogFragment() {
             }
         }
     }
+    private fun uploadPath(path:String) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            pathRef.document().set(Path(path,"${bind.etPaperTitile.text.trim()}")).await()
+        }catch (e:Exception){
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
 
     private fun changeSpinnerData() {
         val a  = ArrayList<String>()

@@ -22,14 +22,4 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.app_bar, menu)
         return true
     }
-
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.download -> Navigation.findNavController(binding.root).navigate(R.id.action_collegeListFragment_to_downloadsFrag)
-
-        }
-        return true
-    }
 }

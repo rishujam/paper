@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.FragmentCollegeBinding
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +19,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-
 
 class CollegeFragment : Fragment(), CollegeListAdapter.OnItemClickListener {
 
@@ -36,7 +37,7 @@ class CollegeFragment : Fragment(), CollegeListAdapter.OnItemClickListener {
             }
             resources.getStringArray(R.array.subYear1)[0] -> {
                 subSelected = adapter.papers[position].name
-                readFiles("B.Tech/${binding.spinner.selectedItem}/${yearSelected}/${subSelected}/")
+                readFolders("B.Tech/${binding.spinner.selectedItem}/${yearSelected}/${subSelected}/")
                 binding.tvFolderType.text = "Papers"
 
             }
@@ -76,7 +77,7 @@ class CollegeFragment : Fragment(), CollegeListAdapter.OnItemClickListener {
 
     private var _binding: FragmentCollegeBinding? = null
     private val binding get() = _binding!!
-    private val imageRef = Firebase.storage.reference
+    private val pathRef = Firebase.firestore.collection("paths")
     private var sub1 = mutableListOf<Paper>()
     private var sub2 = mutableListOf<Paper>()
     private var sub3 = mutableListOf<Paper>()
@@ -114,34 +115,29 @@ class CollegeFragment : Fragment(), CollegeListAdapter.OnItemClickListener {
         return binding.root
     }
 
-
-
-
-    private fun readFiles(path:String){
-        val imageUrls = mutableListOf<Paper>()
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val dialog = ProgressDialog()
-                withContext(Dispatchers.Main){
-                    dialog.show(childFragmentManager,"progress")
+    private fun  readFolders(path:String) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val list = ArrayList<Paper>()
+            val dialog = ProgressDialog()
+            withContext(Dispatchers.Main){
+                dialog.show(childFragmentManager,"progress")
+            }
+            val querySnapshot = pathRef.get().await()
+            for(document in querySnapshot.documents){
+                val obj = document.toObject<Path>()
+                if(obj?.path==path && !list.contains(Paper(obj.value))){
+                    list.add(Paper(obj.value))
                 }
-                val images = imageRef.child(path).listAll().await()
-                for(image in images.items){
-                    val url = image.name
-                    imageUrls.add(Paper(url))
-                }
-                withContext(Dispatchers.Main){
-                    dialog.dismiss()
-                }
-                withContext(Dispatchers.Main){
-                    adapter = PaperListAdapter(imageUrls, this@CollegeFragment)
-                    binding.rvPapers.adapter = adapter
-                    binding.rvPapers.layoutManager = LinearLayoutManager(context)
-                }
-            }catch (e:Exception){
-                withContext(Dispatchers.Main){
-                    Toast.makeText(context,e.message,Toast.LENGTH_LONG).show()
-                }
+            }
+            withContext(Dispatchers.Main){
+                dialog.dismiss()
+                adapter = PaperListAdapter(list,this@CollegeFragment)
+                binding.rvPapers.adapter = adapter
+                binding.rvPapers.layoutManager =LinearLayoutManager(context)
+            }
+        }catch (e:Exception){
+            withContext(Dispatchers.Main){
+                Toast.makeText(context,e.message,Toast.LENGTH_LONG).show()
             }
         }
     }
