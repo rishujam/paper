@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.exam.aktupapers
 
 import org.junit.Test
 

@@ -1,10 +1,10 @@
-package com.example.myapplication
+package com.exam.aktupapers
 
 import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.databinding.ItemImageBinding
+import com.exam.aktupapers.databinding.ItemImageBinding
 
 class ImagesAdapter(
         private val maps:List<Bitmap>

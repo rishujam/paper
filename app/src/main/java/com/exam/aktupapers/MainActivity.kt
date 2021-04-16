@@ -1,11 +1,11 @@
-package com.example.myapplication
+package com.exam.aktupapers
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.navigation.Navigation
-import com.example.myapplication.databinding.ActivityMainBinding
+import android.widget.Toast
+import com.exam.aktupapers.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,5 +21,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.app_bar, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.download -> Toast.makeText(this, "This Feature will be soon Available",Toast.LENGTH_LONG).show()
+        }
+        return super.onOptionsItemSelected(item)
+
     }
 }

@@ -1,11 +1,10 @@
-package com.example.myapplication
+package com.exam.aktupapers
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.databinding.CollegeItemBinding
+import com.exam.aktupapers.databinding.CollegeItemBinding
 
 class CollegeListAdapter(
     var colleges:List<College>,

@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.exam.aktupapers
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -7,7 +7,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.databinding.DialogPaperViewBinding
+import com.exam.aktupapers.databinding.DialogPaperViewBinding
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CoroutineScope

@@ -1,11 +1,10 @@
-package com.example.myapplication
+package com.exam.aktupapers
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.databinding.PaperItemBinding
+import com.exam.aktupapers.databinding.PaperItemBinding
 
 class PaperListAdapter(
         var papers: List<Paper>,

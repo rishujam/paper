@@ -12,7 +12,7 @@ android {
         enabled = true
     }
     defaultConfig {
-        applicationId "com.example.myapplication"
+        applicationId "com.exam.aktupapers"
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 1

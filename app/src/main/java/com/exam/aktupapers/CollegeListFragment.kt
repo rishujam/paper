@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.exam.aktupapers
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.databinding.FragmentCollegeListBinding
+import com.exam.aktupapers.databinding.FragmentCollegeListBinding
 
 class CollegeListFragment : Fragment(), CollegeListAdapter.OnItemClickListener {
 

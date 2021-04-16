@@ -1,12 +1,12 @@
-package com.example.myapplication
+package com.exam.aktupapers
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.example.myapplication.databinding.DialogSelectBinding
-import com.example.myapplication.databinding.DialogUploadBinding
+import com.exam.aktupapers.databinding.DialogSelectBinding
+import com.exam.aktupapers.databinding.DialogUploadBinding
 
 class SelectTypeDialog : DialogFragment() {
 

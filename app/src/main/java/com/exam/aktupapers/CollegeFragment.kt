@@ -1,5 +1,5 @@
 
-package com.example.myapplication
+package com.exam.aktupapers
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,11 +9,10 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.databinding.FragmentCollegeBinding
+import com.exam.aktupapers.databinding.FragmentCollegeBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

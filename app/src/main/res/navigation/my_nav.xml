@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/collegeListFragment"
-        android:name="com.example.myapplication.CollegeListFragment"
+        android:name="com.exam.aktupapers.CollegeListFragment"
         android:label="fragment_college_list"
         tools:layout="@layout/fragment_college_list" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/collegeFragment"
-        android:name="com.example.myapplication.CollegeFragment"
+        android:name="com.exam.aktupapers.CollegeFragment"
         android:label="fragment_college"
         tools:layout="@layout/fragment_college" >
         <action
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/downloadsFrag"
-        android:name="com.example.myapplication.DownloadsFrag"
+        android:name="com.exam.aktupapers.DownloadsFrag"
         android:label="fragment_downloads"
         tools:layout="@layout/fragment_downloads" >
         <action

@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.exam.aktupapers
 
 import android.app.Activity
 import android.content.Intent
@@ -11,7 +11,7 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import com.example.myapplication.databinding.DialogUploadBinding
+import com.exam.aktupapers.databinding.DialogUploadBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
